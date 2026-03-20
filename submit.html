@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a Store — SA Bin Finder</title>
+  <meta name="description" content="Add a missing Salvation Army bin store to our community directory. Help thousands of shoppers find great deals near them.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="navContainer"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">&#8250;</span>
+        <span>Submit a Store</span>
+      </div>
+      <h1>Submit a Store</h1>
+      <p>Help the community by adding a Salvation Army bin store to our free directory</p>
+    </div>
+  </div>
+
+  <div class="submit-form">
+
+    <!-- SUCCESS BOX (hidden until form submitted) -->
+    <div class="success-box" id="successBox">
+      <div class="success-icon">&#9989;</div>
+      <h3>Thank You for Your Submission!</h3>
+      <p>Your store has been submitted and will be reviewed before being added to the directory. We appreciate your contribution to the community!</p>
+      <a href="index.html" class="btn btn-primary" style="margin-top:8px;">Back to Home</a>
+    </div>
+
+    <!-- FORM WRAPPER -->
+    <div id="formWrapper">
+      <div class="form-info-box">
+        &#8505;&#65039; All submissions are reviewed before publishing. Fields marked <strong>*</strong> are required.
+      </div>
+
+      <form id="storeSubmitForm" novalidate>
+
+        <!-- ===== STORE INFO ===== -->
+        <div class="form-card">
+          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:20px;">Store Information</p>
+
+          <div class="form-group">
+            <label class="form-label" for="storeName">Store Name <span class="req">*</span></label>
+            <input type="text" class="form-input" id="storeName" name="storeName"
+              placeholder="e.g. Salvation Army Bin Store – Detroit" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="storeAddress">Street Address <span class="req">*</span></label>
+            <input type="text" class="form-input" id="storeAddress" name="storeAddress"
+              placeholder="e.g. 3031 Grand River Ave" required>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label class="form-label" for="storeCity">City <span class="req">*</span></label>
+              <input type="text" class="form-input" id="storeCity" name="storeCity" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="storeState">State <span class="req">*</span></label>
+              <select class="form-select" id="storeState" name="storeState" required>
+                <option value="">Select...</option>
+                <!-- Populated by JS -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="storeZip">ZIP Code <span class="req">*</span></label>
+              <input type="text" class="form-input" id="storeZip" name="storeZip"
+                placeholder="e.g. 48208" maxlength="5" pattern="\d{5}" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="storePhone">Phone Number</label>
+            <input type="tel" class="form-input" id="storePhone" name="storePhone"
+              placeholder="e.g. (313) 555-0229">
+          </div>
+        </div>
+
+        <!-- ===== PRICING ===== -->
+        <div class="form-card" style="margin-top:20px;">
+          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:20px;">Pricing &amp; Restocking</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="storePricing">Price Per Pound <span class="req">*</span></label>
+              <input type="text" class="form-input" id="storePricing" name="storePricing"
+                placeholder="e.g. $1.49/lb" required>
+              <div class="form-hint">What does this store charge per pound?</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="storeRestocks">Restock Days</label>
+              <input type="text" class="form-input" id="storeRestocks" name="storeRestocks"
+                placeholder="e.g. Tuesday, Friday">
+              <div class="form-hint">Which days do the bins get refilled?</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== HOURS ===== -->
+        <div class="form-card" style="margin-top:20px;">
+          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:8px;">Store Hours</p>
+          <p style="color:var(--muted); font-size:0.87rem; margin-bottom:20px;">Enter hours for each day. Leave blank or type "Closed" if the store is not open that day.</p>
+          <div id="hoursSection">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- ===== DESCRIPTION ===== -->
+        <div class="form-card" style="margin-top:20px;">
+          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:20px;">About the Store</p>
+
+          <div class="form-group">
+            <label class="form-label" for="storeDescription">Description</label>
+            <textarea class="form-textarea" id="storeDescription" name="storeDescription" rows="4"
+              placeholder="Describe this store — what makes it great, what you typically find, tips for first-time visitors, parking info, etc."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="storeFeatures">Categories Available</label>
+            <input type="text" class="form-input" id="storeFeatures" name="storeFeatures"
+              placeholder="e.g. Clothing, Electronics, Furniture, Books, Toys">
+            <div class="form-hint">Comma-separated list of item types typically found here</div>
+          </div>
+        </div>
+
+        <!-- ===== YOUR CONTACT ===== -->
+        <div class="form-card" style="margin-top:20px;">
+          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:8px;">Your Contact <span style="font-weight:400; font-size:0.9rem; color:var(--muted);">(optional)</span></p>
+          <p style="color:var(--muted); font-size:0.87rem; margin-bottom:20px;">Only used to follow up if we have questions about the listing. Never shared publicly.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="submitterName">Your Name</label>
+              <input type="text" class="form-input" id="submitterName" name="submitterName" placeholder="First name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="submitterEmail">Your Email</label>
+              <input type="email" class="form-input" id="submitterEmail" name="submitterEmail"
+                placeholder="only for follow-up questions">
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <div style="margin-top:28px;">
+          <button type="submit" class="btn btn-primary" style="padding:15px 40px; font-size:1rem;">
+            Submit Store for Review &#8594;
+          </button>
+          <p style="margin-top:12px; font-size:0.82rem; color:var(--muted);">
+            By submitting you confirm this is an actual Salvation Army bin / by-the-pound store location.
+          </p>
+        </div>
+
+      </form>
+    </div><!-- end formWrapper -->
+
+  </div><!-- end submit-form -->
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    renderNav();
+    renderFooter();
+    initSubmitPage();
+  </script>
+</body>
+</html>

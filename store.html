@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store Details — SA Bin Finder</title>
+  <meta name="description" content="Salvation Army bin store details — hours, pricing per pound, restock days, address, and contact.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SA Bin Finder">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:url" content="">
+  <script type="application/ld+json" id="ld-store"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="navContainer"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">&#8250;</span>
+        <a href="states.html">States</a>
+        <span class="sep">&#8250;</span>
+        <a href="#" id="breadcrumbStateLink"><span id="breadcrumbStateName">State</span></a>
+        <span class="sep">&#8250;</span>
+        <span id="breadcrumbStore">Store</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="store-detail">
+    <div id="storeDetailContainer">
+      <p style="color:var(--muted); text-align:center; padding:40px 0;">Loading store details...</p>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/enriched_data.js?v=2"></script>
+  <script src="js/data.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+  <script>
+    renderNav();
+    renderFooter();
+    initStorePage();
+  </script>
+</body>
+</html>

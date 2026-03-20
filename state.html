@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>State Stores — SA Bin Finder</title>
+  <meta name="description" content="Find Salvation Army bin stores in this state. View hours, pricing per pound, restock days, and directions.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SA Bin Finder">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:url" content="">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="navContainer"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">&#8250;</span>
+        <a href="states.html">States</a>
+        <span class="sep">&#8250;</span>
+        <span id="breadcrumbState">State</span>
+      </div>
+      <h1 id="pageTitle">Loading...</h1>
+      <p id="pageSubtitle"></p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <select id="cityFilter" class="filter-select">
+          <option value="">All Cities</option>
+        </select>
+        <span class="result-count" id="resultCount"></span>
+        <a href="submit.html" class="btn btn-outline" style="margin-left:auto;">+ Add a Store</a>
+      </div>
+
+      <!-- Store cards populated by JS -->
+      <div class="stores-grid" id="storesContainer">
+        <p style="color:var(--muted);">Loading stores...</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Know a Missing Store?</h2>
+      <p>Add it to help shoppers in your state find great bin store deals.</p>
+      <a href="submit.html" class="btn-white">+ Submit a Store</a>
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/enriched_data.js?v=2"></script>
+  <script src="js/data.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+  <script>
+    renderNav();
+    renderFooter();
+    initStatePage();
+  </script>
+</body>
+</html>

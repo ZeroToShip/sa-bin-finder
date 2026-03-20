@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SA Bin Finder — Find Salvation Army Bin Stores Near You</title>
+  <meta name="description" content="The #1 community directory for Salvation Army bin stores and by-the-pound outlets across all 50 US states. Search by city, state, or zip code — free.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sabinfinder.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SA Bin Finder">
+  <meta property="og:title" content="SA Bin Finder — Find Salvation Army Bin Stores Near You">
+  <meta property="og:description" content="The #1 community directory for Salvation Army bin stores across all 50 US states. Search by city, state, or zip code — free.">
+  <meta property="og:url" content="https://sabinfinder.com/">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <div id="navContainer"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Community-Powered Directory</div>
+      <h1>Find Salvation Army <span>Bin Stores</span> Near You</h1>
+      <p>Search by city, state, or zip code to find SA by-the-pound outlets across all 50 states — always free.</p>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by city, state, or zip code..." autocomplete="off" />
+        <button id="searchBtn">Search Stores</button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong id="totalStores">0</strong>
+          <span>Stores Listed</span>
+        </div>
+        <div class="hero-stat">
+          <strong>50</strong>
+          <span>States Covered</span>
+        </div>
+        <div class="hero-stat">
+          <strong>Free</strong>
+          <span>Always</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH RESULTS (hidden until search is performed) -->
+  <section id="searchResults" style="display:none; background:#fff; border-bottom:1px solid #E2E2E2; padding:48px 0;">
+    <div class="container">
+      <h2 class="section-title" id="searchResultsTitle">Search Results</h2>
+      <div class="stores-grid" id="searchResultsGrid"></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">Finding a bin store near you takes seconds</p>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-icon">&#128269;</div>
+          <h3>Search Your Area</h3>
+          <p>Enter your city, state, or zip code to find Salvation Army bin stores near you.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#128203;</div>
+          <h3>View Store Details</h3>
+          <p>Get hours, pricing per pound, restock days, and everything you need to plan your visit.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#128717;</div>
+          <h3>Shop by the Pound</h3>
+          <p>Arrive on restock day for the freshest bins. Pay just $1–2 per pound on most items!</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#10133;</div>
+          <h3>Add a Store</h3>
+          <p>Know a bin store that's missing? Submit it and help the whole community find it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BROWSE BY STATE -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Browse by State</h2>
+      <p class="section-subtitle">Salvation Army bin stores across all 50 states — click your state to see listings</p>
+      <div class="states-grid" id="statesGrid"></div>
+    </div>
+  </section>
+
+  <!-- RECENTLY ADDED STORES -->
+  <section class="section" style="background:#fff;">
+    <div class="container">
+      <h2 class="section-title" id="recentStoresTitle">Recently Added Stores</h2>
+      <p class="section-subtitle" id="recentStoresSub">The latest bin stores added to our community directory</p>
+      <div class="stores-grid" id="recentStores"></div>
+    </div>
+  </section>
+
+  <!-- PRO TIPS -->
+  <section class="section" style="background:#fff;">
+    <div class="container">
+      <h2 class="section-title">Pro Tips for Bin Store Shopping</h2>
+      <p class="section-subtitle">Get the most out of every visit</p>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-icon">&#8987;</div>
+          <h3>Come on Restock Day</h3>
+          <p>Fresh bins mean the best selection. Check the listing for each store's restock schedule.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#128084;</div>
+          <h3>Bring Your Own Bags</h3>
+          <p>Most stores don't provide bags. A large reusable bag or laundry basket is your best friend.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#9878;</div>
+          <h3>Prices Drop Late Week</h3>
+          <p>Many stores reduce prices toward end of week to clear bins for the next restock.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#128101;</div>
+          <h3>Join the Community</h3>
+          <p>Fellow shoppers are a great resource. Local Facebook groups often share restock alerts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Know a Store That's Missing?</h2>
+      <p>Help thousands of fellow bargain hunters by adding Salvation Army bin stores not yet in the directory.</p>
+      <a href="submit.html" class="btn-white">+ Submit a Store Free</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <script src="js/enriched_data.js?v=2"></script>
+  <script src="js/data.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+  <script>
+    renderNav();
+    renderFooter();
+    initHomepage();
+  </script>
+</body>
+</html>

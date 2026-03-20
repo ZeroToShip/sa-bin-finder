@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Salvation Army Stores by State — SA Bin Finder</title>
+  <meta name="description" content="Find Salvation Army thrift and bin stores in all 50 US states. Browse by state to see store listings, Google ratings, and donation pickup options.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sabinfinder.com/states.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SA Bin Finder">
+  <meta property="og:title" content="Browse Salvation Army Stores by State — SA Bin Finder">
+  <meta property="og:description" content="Find Salvation Army thrift and bin stores in all 50 US states. Browse by state to see ratings, hours, and donation pickup options.">
+  <meta property="og:url" content="https://sabinfinder.com/states.html">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="navContainer"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">&#8250;</span>
+        <span>Browse States</span>
+      </div>
+      <h1>Browse All 50 States</h1>
+      <p>Select a state to see Salvation Army bin store listings near you</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:28px; flex-wrap:wrap;">
+        <input
+          type="text"
+          id="stateSearch"
+          class="form-input"
+          placeholder="&#128269; Filter states..."
+          style="max-width:300px;"
+          autocomplete="off"
+        />
+        <span style="color:var(--muted); font-size:0.88rem;">
+          Showing all 50 states &mdash; red count = stores listed
+        </span>
+      </div>
+
+      <div class="states-grid" id="allStatesGrid">
+        <!-- Populated by JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Don't See Your Store?</h2>
+      <p>Add it to the directory and help other shoppers find it — completely free.</p>
+      <a href="submit.html" class="btn-white">+ Submit a Store</a>
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/enriched_data.js?v=2"></script>
+  <script src="js/data.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+  <script>
+    renderNav();
+    renderFooter();
+    initStatesPage();
+  </script>
+</body>
+</html>
