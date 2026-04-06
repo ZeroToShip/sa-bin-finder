@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /submit.html
 
-Sitemap: https://sabinfinder.com/sitemap.xml
+Sitemap: https://donationcenterfinder.com/sitemap.xml

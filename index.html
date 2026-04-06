@@ -3,16 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SA Bin Finder — Find Salvation Army Bin Stores Near You</title>
-  <meta name="description" content="The #1 community directory for Salvation Army bin stores and by-the-pound outlets across all 50 US states. Search by city, state, or zip code — free.">
+  <title>Donation Center Finder — Find Thrift Stores, Food Pantries & Rehab Centers Near You</title>
+  <meta name="description" content="Find donation centers near you. Browse 1,181+ thrift stores, food pantries, and rehabilitation centers across all 50 US states. Hours, phone numbers, ratings, and directions — free.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://sabinfinder.com/">
+  <link rel="canonical" href="https://donationcenterfinder.com/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="SA Bin Finder">
-  <meta property="og:title" content="SA Bin Finder — Find Salvation Army Bin Stores Near You">
-  <meta property="og:description" content="The #1 community directory for Salvation Army bin stores across all 50 US states. Search by city, state, or zip code — free.">
-  <meta property="og:url" content="https://sabinfinder.com/">
+  <meta property="og:site_name" content="Donation Center Finder">
+  <meta property="og:title" content="Donation Center Finder — Thrift Stores, Food Pantries & Rehab Centers Near You">
+  <meta property="og:description" content="Find 1,181+ donation centers across all 50 US states. Thrift stores, food pantries, and rehabilitation centers with hours, phone, and ratings.">
+  <meta property="og:url" content="https://donationcenterfinder.com/">
+  <meta property="og:image" content="https://donationcenterfinder.com/images/og-home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Donation Center Finder — Thrift Stores, Food Pantries & Rehab Centers">
+  <meta name="twitter:description" content="Find 1,181+ donation centers across all 50 US states. Free directory with hours, phone, and directions.">
   <link rel="stylesheet" href="css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Donation Center Finder",
+    "url": "https://donationcenterfinder.com",
+    "description": "Find thrift stores, food pantries, and rehabilitation centers across all 50 US states.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://donationcenterfinder.com/thrift-stores?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -23,32 +41,36 @@
   <section class="hero">
     <div class="container">
       <div class="hero-badge">Community-Powered Directory</div>
-      <h1>Find Salvation Army <span>Bin Stores</span> Near You</h1>
-      <p>Search by city, state, or zip code to find SA by-the-pound outlets across all 50 states — always free.</p>
+      <h1>Find <span>Donation Centers</span> Near You</h1>
+      <p>Search thrift stores, food pantries, and rehabilitation centers across all 50 states — always free.</p>
 
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search by city, state, or zip code..." autocomplete="off" />
-        <button id="searchBtn">Search Stores</button>
+        <button id="searchBtn">Search</button>
       </div>
 
       <div class="hero-stats">
         <div class="hero-stat">
-          <strong id="totalStores">0</strong>
-          <span>Stores Listed</span>
+          <strong>762</strong>
+          <span>Thrift Stores</span>
+        </div>
+        <div class="hero-stat">
+          <strong>365</strong>
+          <span>Food Pantries</span>
+        </div>
+        <div class="hero-stat">
+          <strong>54</strong>
+          <span>Rehab Centers</span>
         </div>
         <div class="hero-stat">
           <strong>50</strong>
           <span>States Covered</span>
         </div>
-        <div class="hero-stat">
-          <strong>Free</strong>
-          <span>Always</span>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- SEARCH RESULTS (hidden until search is performed) -->
+  <!-- SEARCH RESULTS -->
   <section id="searchResults" style="display:none; background:#fff; border-bottom:1px solid #E2E2E2; padding:48px 0;">
     <div class="container">
       <h2 class="section-title" id="searchResultsTitle">Search Results</h2>
@@ -56,31 +78,66 @@
     </div>
   </section>
 
+  <!-- 3 CATEGORY CARDS -->
+  <section class="section" style="background:var(--area);">
+    <div class="container">
+      <h2 class="section-title" style="text-align:center;">Browse by Service</h2>
+      <p class="section-subtitle" style="text-align:center;">Choose a category to find exactly what you need</p>
+      <div class="category-cards">
+
+        <a href="thrift-stores" class="category-card">
+          <div class="category-card-icon">🛍️</div>
+          <div class="category-card-title">Thrift &amp; Donation Stores</div>
+          <div class="category-card-count">762 locations across 48 states</div>
+          <div class="category-card-desc">Shop affordable clothing, furniture, and household items. Donate goods to support community programs.</div>
+          <div class="category-card-btn">Find Thrift Stores →</div>
+        </a>
+
+        <a href="food-pantries" class="category-card">
+          <div class="category-card-icon">🍽️</div>
+          <div class="category-card-title">Food Pantries</div>
+          <div class="category-card-count">365 locations across 48 states</div>
+          <div class="category-card-desc">Access free meals, food boxes, and emergency food assistance for individuals and families in need.</div>
+          <div class="category-card-btn">Find Food Pantries →</div>
+        </a>
+
+        <a href="rehab-centers" class="category-card">
+          <div class="category-card-icon">❤️</div>
+          <div class="category-card-title">Rehabilitation Centers</div>
+          <div class="category-card-count">54 locations across 22 states</div>
+          <div class="category-card-desc">Find adult rehabilitation programs offering recovery services, housing, and work therapy for men and women.</div>
+          <div class="category-card-btn">Find Rehab Centers →</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
   <!-- HOW IT WORKS -->
   <section class="how-it-works">
     <div class="container">
       <h2 class="section-title">How It Works</h2>
-      <p class="section-subtitle">Finding a bin store near you takes seconds</p>
+      <p class="section-subtitle">Finding donation centers near you takes seconds</p>
       <div class="steps-grid">
         <div class="step">
-          <div class="step-icon">&#128269;</div>
+          <div class="step-icon">🔍</div>
+          <h3>Choose a Service</h3>
+          <p>Select from thrift stores, food pantries, or rehabilitation centers — whatever you need.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">📍</div>
           <h3>Search Your Area</h3>
-          <p>Enter your city, state, or zip code to find Salvation Army bin stores near you.</p>
+          <p>Enter your city, state, or zip code to find nearby donation center locations.</p>
         </div>
         <div class="step">
-          <div class="step-icon">&#128203;</div>
-          <h3>View Store Details</h3>
-          <p>Get hours, pricing per pound, restock days, and everything you need to plan your visit.</p>
+          <div class="step-icon">📋</div>
+          <h3>View Details</h3>
+          <p>Get hours, phone numbers, websites, ratings, and directions — all in one place.</p>
         </div>
         <div class="step">
-          <div class="step-icon">&#128717;</div>
-          <h3>Shop by the Pound</h3>
-          <p>Arrive on restock day for the freshest bins. Pay just $1–2 per pound on most items!</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">&#10133;</div>
-          <h3>Add a Store</h3>
-          <p>Know a bin store that's missing? Submit it and help the whole community find it.</p>
+          <div class="step-icon">➕</div>
+          <h3>Add a Location</h3>
+          <p>Know a location that's missing? Submit it and help the whole community.</p>
         </div>
       </div>
     </div>
@@ -89,66 +146,36 @@
   <!-- BROWSE BY STATE -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title">Browse by State</h2>
-      <p class="section-subtitle">Salvation Army bin stores across all 50 states — click your state to see listings</p>
+      <h2 class="section-title">Browse Donation Centers by State</h2>
+      <p class="section-subtitle">Thrift stores, food pantries, and rehab centers across all 50 states — click your state to explore</p>
       <div class="states-grid" id="statesGrid"></div>
     </div>
   </section>
 
-  <!-- RECENTLY ADDED STORES -->
+  <!-- TOP RATED STORES -->
   <section class="section" style="background:#fff;">
     <div class="container">
-      <h2 class="section-title" id="recentStoresTitle">Recently Added Stores</h2>
-      <p class="section-subtitle" id="recentStoresSub">The latest bin stores added to our community directory</p>
+      <h2 class="section-title" id="recentStoresTitle">Top-Rated Donation Centers</h2>
+      <p class="section-subtitle" id="recentStoresSub">Highest-rated locations from across the country</p>
       <div class="stores-grid" id="recentStores"></div>
-    </div>
-  </section>
-
-  <!-- PRO TIPS -->
-  <section class="section" style="background:#fff;">
-    <div class="container">
-      <h2 class="section-title">Pro Tips for Bin Store Shopping</h2>
-      <p class="section-subtitle">Get the most out of every visit</p>
-      <div class="steps-grid">
-        <div class="step">
-          <div class="step-icon">&#8987;</div>
-          <h3>Come on Restock Day</h3>
-          <p>Fresh bins mean the best selection. Check the listing for each store's restock schedule.</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">&#128084;</div>
-          <h3>Bring Your Own Bags</h3>
-          <p>Most stores don't provide bags. A large reusable bag or laundry basket is your best friend.</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">&#9878;</div>
-          <h3>Prices Drop Late Week</h3>
-          <p>Many stores reduce prices toward end of week to clear bins for the next restock.</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">&#128101;</div>
-          <h3>Join the Community</h3>
-          <p>Fellow shoppers are a great resource. Local Facebook groups often share restock alerts.</p>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- CTA BANNER -->
   <section class="cta-banner">
     <div class="container">
-      <h2>Know a Store That's Missing?</h2>
-      <p>Help thousands of fellow bargain hunters by adding Salvation Army bin stores not yet in the directory.</p>
-      <a href="submit.html" class="btn-white">+ Submit a Store Free</a>
+      <h2>Know a Location That's Missing?</h2>
+      <p>Help thousands of people find donation centers by submitting a location not yet in the directory.</p>
+      <a href="submit.html" class="btn-white">+ Submit a Location Free</a>
     </div>
   </section>
 
   <!-- FOOTER -->
   <div id="footerContainer"></div>
 
-  <script src="js/enriched_data.js?v=2"></script>
-  <script src="js/data.js?v=2"></script>
-  <script src="js/app.js?v=2"></script>
+  <script src="js/enriched_data.js?v=7"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
   <script>
     renderNav();
     renderFooter();

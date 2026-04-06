@@ -1,10 +1,10 @@
 /* ============================================================
-   SA Bin Finder — Application Logic
+   Donation Center Finder — Application Logic
    ============================================================ */
 
 /* ---- UTILITIES ---- */
 
-const SITE_URL = 'https://sabinfinder.com';
+const SITE_URL = 'https://donationcenterfinder.com';
 
 function getParam(key) {
   return new URLSearchParams(window.location.search).get(key);
@@ -185,6 +185,73 @@ function scoreBar(label, score) {
     </div>`;
 }
 
+/* ---- WORKING HOURS FORMATTER ---- */
+
+function formatWorkingHours(raw) {
+  if (!raw) return '';
+  const today = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+
+  // Handle both formats:
+  // Display: "Monday: 9AM-7PM | Tuesday: 9AM-7PM | ..."
+  // CSV:     "Monday,9AM,7PM|Tuesday,9AM,7PM|..."
+  const entries = raw.split('|').filter(Boolean);
+
+  const rows = entries.map(entry => {
+    entry = entry.trim();
+    let day, hours;
+
+    if (entry.includes(':')) {
+      // Display format: "Monday: 9AM-7PM"
+      const idx = entry.indexOf(':');
+      day   = entry.substring(0, idx).trim();
+      hours = entry.substring(idx + 1).trim();
+      // Clean up array-like formatting
+      hours = hours.replace(/^\[|\]$/g, '').replace(/['"]/g, '').trim();
+      if (hours === 'Closed' || hours === '') hours = 'Closed';
+    } else {
+      // CSV format: "Monday,9AM,7PM"
+      const parts = entry.split(',');
+      if (parts.length < 2) return '';
+      day   = parts[0].trim();
+      const open  = parts[1] ? parts[1].trim() : '';
+      const close = parts[2] ? parts[2].trim() : '';
+      hours = close ? `${open} – ${close}` : open;
+    }
+
+    const isToday = day.toLowerCase() === today.toLowerCase();
+    const isClosed = hours.toLowerCase() === 'closed';
+    return `<div class="hours-row${isToday ? ' hours-today' : ''}">
+      <span class="hours-day">${day}${isToday ? ' <span class="hours-badge">Today</span>' : ''}</span>
+      <span class="hours-time${isClosed ? ' hours-closed' : ''}">${hours}</span>
+    </div>`;
+  }).filter(Boolean).join('');
+
+  return rows ? `<div class="hours-table">${rows}</div>` : '';
+}
+
+function todayHours(raw) {
+  if (!raw) return '';
+  const today = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+  const entries = raw.split('|').filter(Boolean);
+  for (const entry of entries) {
+    const e = entry.trim();
+    let day, hours;
+    if (e.includes(':')) {
+      const idx = e.indexOf(':');
+      day = e.substring(0, idx).trim();
+      hours = e.substring(idx + 1).trim().replace(/^\[|\]$/g, '').replace(/['"]/g, '').trim();
+    } else {
+      const parts = e.split(',');
+      day = (parts[0] || '').trim();
+      const open = (parts[1] || '').trim();
+      const close = (parts[2] || '').trim();
+      hours = close ? `${open} – ${close}` : open;
+    }
+    if (day.toLowerCase() === today.toLowerCase()) return hours || 'Closed';
+  }
+  return '';
+}
+
 /* ---- ENRICHED STORE CARD ---- */
 
 function storeCardEnriched(store) {
@@ -204,8 +271,13 @@ function storeCardEnriched(store) {
     store.cleanliness_score    != null ? `<span class="schip">Clean ${store.cleanliness_score}/10</span>`         : '',
   ].filter(Boolean).join('');
 
+  const photoHtml = store.photo
+    ? `<div class="store-card-photo"><img src="${store.photo}" alt="${escHtml(store.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'" /></div>`
+    : '';
+
   return `
     <div class="store-card">
+      ${photoHtml}
       <div class="store-card-header">
         <div class="store-card-logo">SA</div>
         <div>
@@ -216,8 +288,10 @@ function storeCardEnriched(store) {
       <div class="store-card-body">
         <div class="store-card-detail">
           <span class="store-card-detail-icon">&#128205;</span>
-          <span>${escHtml(store.address)}, ${escHtml(store.city)}, ${store.state_abbr} ${store.zip}</span>
+          <span>${escHtml(store.street || store.address)}, ${escHtml(store.city)}, ${store.state_abbr || store.state} ${store.zip || ''}</span>
         </div>
+        ${store.phone ? `<div class="store-card-detail"><span class="store-card-detail-icon">&#128222;</span><span>${escHtml(store.phone)}</span></div>` : ''}
+        ${store.working_hours ? `<div class="store-card-detail"><span class="store-card-detail-icon">&#128336;</span><span>Today: <strong>${todayHours(store.working_hours) || 'See details'}</strong></span></div>` : ''}
         ${ratingHtml}
         ${chips ? `<div class="schips-row">${chips}</div>` : ''}
       </div>
@@ -235,11 +309,19 @@ function renderNav() {
       <div class="container">
         <div class="nav-inner">
           <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">SA</div>
-            <span>SA Bin Finder</span>
+            <div class="nav-logo-icon">DC</div>
+            <span>Donation Center Finder</span>
           </a>
           <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
+            <li class="nav-dropdown">
+              <a href="#" class="nav-dropdown-toggle">Services &#9660;</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="thrift-stores.html">&#128722; Thrift &amp; Donation Stores</a></li>
+                <li><a href="food-pantries.html">&#127860; Food Pantries</a></li>
+                <li><a href="rehab-centers.html">&#10084; Rehabilitation Centers</a></li>
+              </ul>
+            </li>
             <li><a href="states.html">Browse States</a></li>
             <li><a href="submit.html" class="nav-cta">+ Add a Store</a></li>
           </ul>
@@ -251,6 +333,9 @@ function renderNav() {
     </nav>
     <div class="mobile-menu" id="mobileMenu">
       <a href="index.html">Home</a>
+      <a href="thrift-stores.html">&#128722; Thrift &amp; Donation Stores</a>
+      <a href="food-pantries.html">&#127860; Food Pantries</a>
+      <a href="rehab-centers.html">&#10084; Rehabilitation Centers</a>
       <a href="states.html">Browse States</a>
       <a href="submit.html">+ Add a Store</a>
     </div>
@@ -258,6 +343,19 @@ function renderNav() {
   document.getElementById('navToggle').addEventListener('click', () => {
     document.getElementById('mobileMenu').classList.toggle('open');
   });
+  // Dropdown toggle on click for desktop
+  const toggle = document.querySelector('.nav-dropdown-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector('.nav-dropdown').classList.toggle('open');
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) {
+        document.querySelector('.nav-dropdown').classList.remove('open');
+      }
+    });
+  }
 }
 
 function renderFooter() {
@@ -267,17 +365,19 @@ function renderFooter() {
         <div class="footer-grid">
           <div class="footer-brand">
             <div class="footer-logo">
-              <div class="footer-logo-icon">SA</div>
-              <span>SA Bin Finder</span>
+              <div class="footer-logo-icon">DC</div>
+              <span>Donation Center Finder</span>
             </div>
-            <p>The #1 community directory for Salvation Army bin stores and by-the-pound outlets across all 50 states. Find your nearest store today — free, always.</p>
+            <p>The #1 community directory for donation centers — thrift stores, food pantries, and rehabilitation centers — across all 50 states. Free, always.</p>
           </div>
           <div>
-            <div class="footer-heading">Quick Links</div>
+            <div class="footer-heading">Services</div>
             <ul class="footer-links">
-              <li><a href="index.html">Home</a></li>
+              <li><a href="thrift-stores.html">Thrift &amp; Donation Stores</a></li>
+              <li><a href="food-pantries.html">Food Pantries</a></li>
+              <li><a href="rehab-centers.html">Rehabilitation Centers</a></li>
               <li><a href="states.html">Browse All States</a></li>
-              <li><a href="submit.html">Submit a Store</a></li>
+              <li><a href="submit.html">Submit a Location</a></li>
             </ul>
           </div>
           <div>
@@ -287,12 +387,12 @@ function renderFooter() {
               <li><a href="state.html?state=texas">Texas</a></li>
               <li><a href="state.html?state=florida">Florida</a></li>
               <li><a href="state.html?state=new-york">New York</a></li>
-              <li><a href="state.html?state=michigan">Michigan</a></li>
+              <li><a href="state.html?state=illinois">Illinois</a></li>
             </ul>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2025 SA Bin Finder &mdash; Community-powered directory. Not affiliated with The Salvation Army.</p>
+          <p>&copy; 2025 Donation Center Finder &mdash; Community-powered directory. Not affiliated with The Salvation Army.</p>
         </div>
       </div>
     </footer>
@@ -527,7 +627,7 @@ async function initStatePage() {
   const stores     = window.SAEnriched ? enrichedByState(stateData.name) : storesByState(slug);
 
   setPageMeta(
-    `Salvation Army Stores in ${stateData.name} — ${stores.length} Locations | SA Bin Finder`,
+    `Salvation Army Stores in ${stateData.name} — ${stores.length} Locations | Donation Center Finder`,
     `Find all ${stores.length} Salvation Army thrift and bin stores in ${stateData.name}. Browse by city, view Google ratings, hours, and donation pickup options.`,
     `/state.html?state=${slug}`
   );
@@ -578,6 +678,94 @@ function renderStoreGrid(stores) {
 }
 
 /* ============================================================
+   PAGE: CATEGORY (Thrift / Food / Rehab)
+   ============================================================ */
+
+async function initCategoryPage() {
+  await (window._categoryReady || Promise.resolve([]));
+
+  const data   = window.SACategoryData || [];
+  const cat    = window.SA_CATEGORY || 'all';
+
+  // State filter dropdown
+  const stateFilter = document.getElementById('stateFilter');
+  const states = [...new Set(data.map(s => s.state).filter(Boolean))].sort();
+  if (stateFilter) {
+    stateFilter.innerHTML = '<option value="">All States</option>' +
+      states.map(s => `<option value="${escHtml(s)}">${escHtml(s)}</option>`).join('');
+    stateFilter.addEventListener('change', () => renderCategoryGrid(applyFilters()));
+  }
+
+  // City filter
+  const cityFilter = document.getElementById('cityFilter');
+  if (cityFilter) {
+    cityFilter.addEventListener('change', () => renderCategoryGrid(applyFilters()));
+  }
+
+  // Search
+  const searchBtn   = document.getElementById('searchBtn');
+  const searchInput = document.getElementById('searchInput');
+  if (searchBtn)   searchBtn.addEventListener('click', () => renderCategoryGrid(applyFilters()));
+  if (searchInput) searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') renderCategoryGrid(applyFilters()); });
+
+  // State filter also updates city dropdown
+  if (stateFilter && cityFilter) {
+    stateFilter.addEventListener('change', () => {
+      const st = stateFilter.value;
+      const cities = [...new Set(data.filter(s => !st || s.state === st).map(s => s.city).filter(Boolean))].sort();
+      cityFilter.innerHTML = '<option value="">All Cities</option>' +
+        cities.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+    });
+  }
+
+  // Count badge
+  const countEl = document.getElementById('resultCount');
+  if (countEl) countEl.textContent = `${data.length.toLocaleString()} locations`;
+
+  // Initial render — show all
+  renderCategoryGrid(data);
+
+  function applyFilters() {
+    const q  = (searchInput ? searchInput.value.trim() : '');
+    const st = stateFilter  ? stateFilter.value : '';
+    const ci = cityFilter   ? cityFilter.value  : '';
+    const tokens = q ? normaliseQuery(q) : [];
+
+    let results = data;
+    if (st) results = results.filter(s => s.state === st);
+    if (ci) results = results.filter(s => s.city  === ci);
+    if (tokens.length) {
+      results = results.filter(s => {
+        const text = buildSearchText(s);
+        return tokens.every(tok => text.includes(tok));
+      });
+    }
+    if (countEl) countEl.textContent = `${results.length.toLocaleString()} locations`;
+    return results;
+  }
+}
+
+function renderCategoryGrid(stores) {
+  const el = document.getElementById('categoryGrid');
+  if (!el) return;
+  if (!stores || stores.length === 0) {
+    el.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-state-icon">&#128269;</div>
+        <h3>No locations found</h3>
+        <p>Try a different search or filter.</p>
+      </div>`;
+    return;
+  }
+  const capped = stores.slice(0, 60);
+  el.innerHTML = capped.map(storeCardEnriched).join('');
+  if (stores.length > 60) {
+    el.innerHTML += `<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:16px 0;font-size:0.9rem;">
+      Showing 60 of ${stores.length.toLocaleString()} — use the search or state filter to narrow results.</p>`;
+  }
+}
+
+/* ============================================================
    PAGE: STORE DETAIL
    ============================================================ */
 
@@ -616,7 +804,7 @@ function renderEnrichedStoreDetail(store) {
   const reviews = parseInt(store.review_count) || 0;
   const ratingSnippet = rating > 0 ? ` Rated ${rating.toFixed(1)}/5 by ${reviews} reviewers.` : '';
   setPageMeta(
-    `${store.name} — ${store.city}, ${store.state} | SA Bin Finder`,
+    `${store.name} — ${store.city}, ${store.state} | Donation Center Finder`,
     `Visit ${store.name} in ${store.city}, ${store.state}.${ratingSnippet} Get directions, accepted donations, pickup scheduling & AI-scored reviews.`,
     `/store.html?pid=${encodeURIComponent(store.place_id || '')}`
   );
@@ -678,8 +866,13 @@ function renderEnrichedStoreDetail(store) {
       ${store.reviews_link ? `<a href="${store.reviews_link}" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:14px; display:inline-block;">Read All Reviews on Google &#8599;</a>` : ''}
     </div>` : '';
 
+  const detailPhoto = store.photo
+    ? `<div class="store-detail-photo"><img src="${store.photo}" alt="${escHtml(store.name)}" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'" /></div>`
+    : '';
+
   document.getElementById('storeDetailContainer').innerHTML = `
     <div class="store-detail-card">
+      ${detailPhoto}
       <div class="store-detail-header">
         <div class="store-detail-logo">SA</div>
         <div class="store-detail-title">
@@ -691,18 +884,27 @@ function renderEnrichedStoreDetail(store) {
       <div class="store-detail-body">
 
         <div class="detail-section">
-          <div class="detail-section-title">Location</div>
-          <div class="info-row"><span class="icon">&#128205;</span><span>${escHtml(store.address)}, ${escHtml(store.city)}, ${escHtml(store.state)} ${escHtml(store.zip)}</span></div>
+          <div class="detail-section-title">Contact &amp; Location</div>
+          <div class="info-row"><span class="icon">&#128205;</span><span>${escHtml(store.street || store.address)}, ${escHtml(store.city)}, ${escHtml(store.state_abbr || store.state)} ${escHtml(store.zip)}</span></div>
+          ${store.phone ? `<div class="info-row"><span class="icon">&#128222;</span><a href="tel:${escHtml(store.phone)}">${escHtml(store.phone)}</a></div>` : ''}
+          ${store.website ? `<div class="info-row"><span class="icon">&#127760;</span><a href="${escHtml(store.website)}" target="_blank" rel="noopener">${escHtml(store.website.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a></div>` : ''}
           ${store.location_link ? `<div style="margin-top:12px;"><a href="${store.location_link}" target="_blank" rel="noopener" class="btn btn-outline">&#128205; View on Google Maps</a></div>` : ''}
         </div>
 
+        ${store.working_hours ? `<div class="detail-section">
+          <div class="detail-section-title">Hours</div>
+          ${formatWorkingHours(store.working_hours)}
+        </div>` : ''}
+
+        ${store.category ? `<div class="detail-section"><div class="detail-section-title">Service Type</div><span class="tag" style="font-size:0.95rem;">${escHtml(store.category)}</span></div>` : ''}
+
         ${scoresSection}
 
-        <div class="detail-section">
+        ${store.donation_pickup_url ? `<div class="detail-section">
           <div class="detail-section-title">Donate Goods</div>
           <p style="color:var(--muted); font-size:0.9rem; margin-bottom:14px;">Schedule a free donation pickup right from your home — Salvation Army picks it up at no charge.</p>
           <a href="${store.donation_pickup_url}" target="_blank" rel="noopener" class="btn btn-primary">&#128666; Schedule Free Pickup</a>
-        </div>
+        </div>` : ''}
 
         <div class="detail-section">
           <div class="detail-section-title">Accepted Donations</div>
@@ -723,7 +925,7 @@ function renderEnrichedStoreDetail(store) {
 
 function renderLegacyStoreDetail(store) {
   setPageMeta(
-    `${store.name} — ${store.city}, ${store.state} | SA Bin Finder`,
+    `${store.name} — ${store.city}, ${store.state} | Donation Center Finder`,
     `Visit ${store.name} in ${store.city}, ${store.state}. View hours, accepted donations, and get directions to this Salvation Army thrift store.`,
     `/store.html?id=${store.id}`
   );

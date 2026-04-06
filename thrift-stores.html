@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thrift Stores & Clothes Donation Centers Near Me — All 50 States | Donation Center Finder</title>
+  <meta name="description" content="Find 762 thrift stores and clothes donation centers near you. Donate clothing, furniture, and household items. Browse locations across 48 states with hours, phone numbers, and ratings.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://donationcenterfinder.com/thrift-stores">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Donation Center Finder">
+  <meta property="og:title" content="Thrift Stores & Clothes Donation Centers Near Me — All 50 States">
+  <meta property="og:description" content="Find 762 thrift stores and clothes donation drop-off locations across 48 states. Hours, phone, ratings and directions — free.">
+  <meta property="og:url" content="https://donationcenterfinder.com/thrift-stores">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>window.SA_CATEGORY = 'thrift';</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Thrift Stores & Donation Centers Near Me",
+    "description": "Directory of 762 thrift stores and donation centers across 48 US states.",
+    "url": "https://donationcenterfinder.com/thrift-stores",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Donation Center Finder",
+      "url": "https://donationcenterfinder.com"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div id="navContainer"></div>
+
+  <!-- HERO -->
+  <section class="category-hero">
+    <div class="container">
+      <div class="category-hero-icon">🛍️</div>
+      <h1>Thrift Stores &amp; <span>Donation Centers</span> Near Me</h1>
+      <p>Find thrift stores and clothes donation drop-off locations near you. Shop affordable clothing, furniture, and household goods — or donate items to support community programs.</p>
+      <div style="display:flex; gap:32px; justify-content:center; flex-wrap:wrap; font-size:0.95rem; opacity:0.85;">
+        <span>✔ 762 Locations</span>
+        <span>✔ 48 States</span>
+        <span>✔ Hours &amp; Phone Numbers</span>
+        <span>✔ Google Ratings</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <div class="category-filters">
+    <div class="container">
+      <div class="category-filters-inner">
+        <select id="stateFilter" aria-label="Filter by state">
+          <option value="">All States</option>
+        </select>
+        <select id="cityFilter" aria-label="Filter by city">
+          <option value="">All Cities</option>
+        </select>
+        <div class="filter-search">
+          <input type="text" id="searchInput" placeholder="Search by name, city, zip..." autocomplete="off" />
+          <button id="searchBtn">Search</button>
+        </div>
+        <span class="result-count" id="resultCount">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORE GRID -->
+  <section class="section">
+    <div class="container">
+      <div class="stores-grid" id="categoryGrid">
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="empty-state-icon">⏳</div>
+          <h3>Loading stores...</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO SECTION -->
+  <section class="section" style="background:var(--area);">
+    <div class="container">
+      <h2 class="section-title">About Thrift Stores &amp; Donation Centers</h2>
+      <p class="section-subtitle">How your shopping and donations make a difference</p>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-icon">👕</div>
+          <h3>What They Accept</h3>
+          <p>Clothing, shoes, furniture, electronics, books, kitchenware, toys, bedding, and household items in good condition.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">🚚</div>
+          <h3>Free Donation Pickup</h3>
+          <p>Many locations offer free home pickup for large donations. Schedule a pickup online or call your local store directly.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">💰</div>
+          <h3>Affordable Prices</h3>
+          <p>Shop quality secondhand goods at a fraction of retail prices. All proceeds support community assistance programs.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">❤️</div>
+          <h3>Your Impact</h3>
+          <p>Every purchase and donation funds emergency shelters, disaster relief, addiction recovery, and food assistance programs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Know a Thrift Store That's Missing?</h2>
+      <p>Help others find donation drop-off locations by submitting a store not yet in our directory.</p>
+      <a href="submit.html" class="btn-white">+ Submit a Store Free</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <script src="js/category_loader.js?v=7"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
+  <script>
+    renderNav();
+    renderFooter();
+    window._categoryReady.then(() => initCategoryPage());
+  </script>
+</body>
+</html>
