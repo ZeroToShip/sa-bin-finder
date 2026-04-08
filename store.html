@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Location Details — Donation Center Finder</title>
-  <meta name="description" content="Donation center details — hours, phone, address, ratings, and directions.">
+  <meta name="description" content="View this donation center's hours, phone number, address, Google ratings, and directions. Find thrift stores, food pantries, and rehab centers near you.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="">
   <meta property="og:type" content="website">
@@ -12,6 +12,7 @@
   <meta property="og:title" content="">
   <meta property="og:description" content="">
   <meta property="og:url" content="">
+  <meta property="og:image" content="https://donationcenterfinder.com/images/og-home.png">
   <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json" id="ld-store"></script>
   <link rel="stylesheet" href="css/styles.css">
@@ -36,15 +37,17 @@
 
   <div class="store-detail">
     <div id="storeDetailContainer">
-      <p style="color:var(--muted); text-align:center; padding:40px 0;">Loading location details...</p>
+      <h1 id="storeDetailH1" style="text-align:center; padding:20px 0 0;">Donation Center Details</h1>
+      <p style="color:var(--muted); text-align:center; padding:10px 0 20px;">View hours, phone number, address, ratings, and directions for this location. Browse our directory of 1,181+ thrift stores, food pantries, and rehabilitation centers across all 50 US states.</p>
+      <p style="color:var(--muted); text-align:center; padding:0 0 20px;">Loading location details...</p>
     </div>
   </div>
 
   <div id="footerContainer"></div>
 
-  <script src="js/enriched_data.js?v=7"></script>
-  <script src="js/data.js?v=7"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/enriched_data.js?v=8"></script>
+  <script src="js/data.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
   <script>
     renderNav();
     renderFooter();

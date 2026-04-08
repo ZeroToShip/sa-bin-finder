@@ -34,7 +34,7 @@ function setPageMeta(title, description, canonicalPath) {
   canonical.href = SITE_URL + canonicalPath;
 
   // Open Graph
-  const og = { 'og:title': title, 'og:description': description, 'og:url': SITE_URL + canonicalPath };
+  const og = { 'og:title': title, 'og:description': description, 'og:url': SITE_URL + canonicalPath, 'og:image': SITE_URL + '/images/og-home.png' };
   Object.entries(og).forEach(([prop, val]) => {
     let tag = document.querySelector(`meta[property="${prop}"]`);
     if (!tag) {
@@ -481,7 +481,7 @@ async function initHomepage() {
       const titleEl = document.getElementById('recentStoresTitle');
       const subEl   = document.getElementById('recentStoresSub');
       if (titleEl) titleEl.textContent = 'Top-Rated Stores';
-      if (subEl)   subEl.textContent   = 'Highest-rated Salvation Army stores from across the country';
+      if (subEl)   subEl.textContent   = 'Highest-rated donation centers from across the country';
 
       const featured = [...window.SAEnriched]
         .filter(s => parseFloat(s.rating) >= 4.3 && parseInt(s.review_count) >= 20)
@@ -627,8 +627,8 @@ async function initStatePage() {
   const stores     = window.SAEnriched ? enrichedByState(stateData.name) : storesByState(slug);
 
   setPageMeta(
-    `Salvation Army Stores in ${stateData.name} — ${stores.length} Locations | Donation Center Finder`,
-    `Find all ${stores.length} Salvation Army thrift and bin stores in ${stateData.name}. Browse by city, view Google ratings, hours, and donation pickup options.`,
+    `Donation Centers in ${stateData.name} — ${stores.length} Locations | Donation Center Finder`,
+    `Find ${stores.length} donation centers in ${stateData.name}. Browse thrift stores, food pantries, and rehab centers by city with hours, ratings, and directions.`,
     `/state.html?state=${slug}`
   );
 
@@ -637,8 +637,8 @@ async function initStatePage() {
 
   const hEl = document.getElementById('pageTitle');
   const sEl = document.getElementById('pageSubtitle');
-  if (hEl) hEl.textContent = `${stateData.name} Bin Stores`;
-  if (sEl) sEl.textContent = `${stores.length.toLocaleString()} Salvation Army bin store${stores.length !== 1 ? 's' : ''} found in ${stateData.name}`;
+  if (hEl) hEl.textContent = `Donation Centers in ${stateData.name}`;
+  if (sEl) sEl.textContent = `${stores.length.toLocaleString()} donation center${stores.length !== 1 ? 's' : ''} found in ${stateData.name}`;
 
   const cityFilter = document.getElementById('cityFilter');
   const cities = [...new Set(stores.map(s => s.city))].sort();
@@ -668,7 +668,7 @@ function renderStoreGrid(stores) {
       <div class="empty-state">
         <div class="empty-state-icon">&#127978;</div>
         <h3>No stores listed yet</h3>
-        <p>Be the first to add a Salvation Army bin store in this state!</p>
+        <p>Be the first to add a donation center in this state!</p>
         <a href="submit.html" class="btn btn-primary">Add a Store</a>
       </div>`;
   } else {
@@ -926,7 +926,7 @@ function renderEnrichedStoreDetail(store) {
 function renderLegacyStoreDetail(store) {
   setPageMeta(
     `${store.name} — ${store.city}, ${store.state} | Donation Center Finder`,
-    `Visit ${store.name} in ${store.city}, ${store.state}. View hours, accepted donations, and get directions to this Salvation Army thrift store.`,
+    `Visit ${store.name} in ${store.city}, ${store.state}. View hours, accepted donations, and get directions to this donation center.`,
     `/store.html?id=${store.id}`
   );
 
