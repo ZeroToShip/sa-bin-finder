@@ -69,7 +69,7 @@ function injectStoreSchema(store) {
       "postalCode": store.zip,
       "addressCountry": "US"
     },
-    "url": `${SITE_URL}/store.html?pid=${pid}`,
+    "url": `${SITE_URL}/store?pid=${pid}`,
   };
 
   if (store.latitude && store.longitude) {
@@ -296,7 +296,7 @@ function storeCardEnriched(store) {
         ${chips ? `<div class="schips-row">${chips}</div>` : ''}
       </div>
       <div class="store-card-footer">
-        <a href="store.html?pid=${encodeURIComponent(store.place_id)}" class="btn btn-primary btn-block">View Store Details</a>
+        <a href="store?pid=${encodeURIComponent(store.place_id)}" class="btn btn-primary btn-block">View Store Details</a>
       </div>
     </div>`;
 }
@@ -308,22 +308,22 @@ function renderNav() {
     <nav class="nav">
       <div class="container">
         <div class="nav-inner">
-          <a href="index.html" class="nav-logo">
+          <a href="/" class="nav-logo">
             <div class="nav-logo-icon">DC</div>
             <span>Donation Center Finder</span>
           </a>
           <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li class="nav-dropdown">
               <a href="#" class="nav-dropdown-toggle">Services &#9660;</a>
               <ul class="nav-dropdown-menu">
-                <li><a href="thrift-stores.html">&#128722; Thrift &amp; Donation Stores</a></li>
-                <li><a href="food-pantries.html">&#127860; Food Pantries</a></li>
-                <li><a href="rehab-centers.html">&#10084; Rehabilitation Centers</a></li>
+                <li><a href="thrift-stores">&#128722; Thrift &amp; Donation Stores</a></li>
+                <li><a href="food-pantries">&#127860; Food Pantries</a></li>
+                <li><a href="rehab-centers">&#10084; Rehabilitation Centers</a></li>
               </ul>
             </li>
-            <li><a href="states.html">Browse States</a></li>
-            <li><a href="submit.html" class="nav-cta">+ Add a Store</a></li>
+            <li><a href="states">Browse States</a></li>
+            <li><a href="submit" class="nav-cta">+ Add a Store</a></li>
           </ul>
           <div class="nav-toggle" id="navToggle">
             <span></span><span></span><span></span>
@@ -332,12 +332,12 @@ function renderNav() {
       </div>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
-      <a href="index.html">Home</a>
-      <a href="thrift-stores.html">&#128722; Thrift &amp; Donation Stores</a>
-      <a href="food-pantries.html">&#127860; Food Pantries</a>
-      <a href="rehab-centers.html">&#10084; Rehabilitation Centers</a>
-      <a href="states.html">Browse States</a>
-      <a href="submit.html">+ Add a Store</a>
+      <a href="/">Home</a>
+      <a href="thrift-stores">&#128722; Thrift &amp; Donation Stores</a>
+      <a href="food-pantries">&#127860; Food Pantries</a>
+      <a href="rehab-centers">&#10084; Rehabilitation Centers</a>
+      <a href="states">Browse States</a>
+      <a href="submit">+ Add a Store</a>
     </div>
   `;
   document.getElementById('navToggle').addEventListener('click', () => {
@@ -373,21 +373,21 @@ function renderFooter() {
           <div>
             <div class="footer-heading">Services</div>
             <ul class="footer-links">
-              <li><a href="thrift-stores.html">Thrift &amp; Donation Stores</a></li>
-              <li><a href="food-pantries.html">Food Pantries</a></li>
-              <li><a href="rehab-centers.html">Rehabilitation Centers</a></li>
-              <li><a href="states.html">Browse All States</a></li>
-              <li><a href="submit.html">Submit a Location</a></li>
+              <li><a href="thrift-stores">Thrift &amp; Donation Stores</a></li>
+              <li><a href="food-pantries">Food Pantries</a></li>
+              <li><a href="rehab-centers">Rehabilitation Centers</a></li>
+              <li><a href="states">Browse All States</a></li>
+              <li><a href="submit">Submit a Location</a></li>
             </ul>
           </div>
           <div>
             <div class="footer-heading">Popular States</div>
             <ul class="footer-links">
-              <li><a href="state.html?state=california">California</a></li>
-              <li><a href="state.html?state=texas">Texas</a></li>
-              <li><a href="state.html?state=florida">Florida</a></li>
-              <li><a href="state.html?state=new-york">New York</a></li>
-              <li><a href="state.html?state=illinois">Illinois</a></li>
+              <li><a href="state?state=california">California</a></li>
+              <li><a href="state?state=texas">Texas</a></li>
+              <li><a href="state?state=florida">Florida</a></li>
+              <li><a href="state?state=new-york">New York</a></li>
+              <li><a href="state?state=illinois">Illinois</a></li>
             </ul>
           </div>
         </div>
@@ -434,7 +434,7 @@ function storeCard(store) {
         <div class="store-card-tags">${tags}${badge}</div>
       </div>
       <div class="store-card-footer">
-        <a href="store.html?id=${store.id}" class="btn btn-primary btn-block">View Store Details</a>
+        <a href="store?id=${store.id}" class="btn btn-primary btn-block">View Store Details</a>
       </div>
     </div>
   `;
@@ -447,7 +447,7 @@ function statesGrid(states) {
     const count = storeCount(state.slug);
     const label = count > 0 ? `${count.toLocaleString()} store${count > 1 ? 's' : ''}` : 'Be first to add';
     return `
-      <a href="state.html?state=${state.slug}" class="state-card">
+      <a href="state?state=${state.slug}" class="state-card">
         <div class="state-card-name">${state.name}</div>
         <div class="state-card-count ${count > 0 ? 'has-stores' : ''}">${label}</div>
       </a>
@@ -571,7 +571,7 @@ async function doSearch() {
       <div class="empty-state">
         <div class="empty-state-icon">&#128269;</div>
         <h3>No stores found</h3>
-        <p>Try a different city, state, or zip code — or <a href="submit.html">add this store</a> to the directory!</p>
+        <p>Try a different city, state, or zip code — or <a href="submit">add this store</a> to the directory!</p>
       </div>`;
   } else {
     const capped = results.slice(0, 30);
@@ -616,10 +616,10 @@ async function initStatesPage() {
 
 async function initStatePage() {
   const slug = getParam('state');
-  if (!slug) { window.location.href = 'states.html'; return; }
+  if (!slug) { window.location.href = 'states'; return; }
 
   const stateData = stateBySlug(slug);
-  if (!stateData) { window.location.href = 'states.html'; return; }
+  if (!stateData) { window.location.href = 'states'; return; }
 
   const ready = window._enrichedReady || Promise.resolve([]);
   await ready;
@@ -629,7 +629,7 @@ async function initStatePage() {
   setPageMeta(
     `Donation Centers in ${stateData.name} — ${stores.length} Locations | Donation Center Finder`,
     `Find ${stores.length} donation centers in ${stateData.name}. Browse thrift stores, food pantries, and rehab centers by city with hours, ratings, and directions.`,
-    `/state.html?state=${slug}`
+    `/state?state=${slug}`
   );
 
   const bcEl = document.getElementById('breadcrumbState');
@@ -669,7 +669,7 @@ function renderStoreGrid(stores) {
         <div class="empty-state-icon">&#127978;</div>
         <h3>No stores listed yet</h3>
         <p>Be the first to add a donation center in this state!</p>
-        <a href="submit.html" class="btn btn-primary">Add a Store</a>
+        <a href="submit" class="btn btn-primary">Add a Store</a>
       </div>`;
   } else {
     const isEnriched = stores[0] && stores[0].place_id;
@@ -795,7 +795,7 @@ async function initStorePage() {
     <div class="empty-state">
       <div class="empty-state-icon">&#128269;</div>
       <h3>Store not found</h3>
-      <p><a href="index.html">Back to home</a></p>
+      <p><a href="/">Back to home</a></p>
     </div>`;
 }
 
@@ -806,7 +806,7 @@ function renderEnrichedStoreDetail(store) {
   setPageMeta(
     `${store.name} — ${store.city}, ${store.state} | Donation Center Finder`,
     `Visit ${store.name} in ${store.city}, ${store.state}.${ratingSnippet} Get directions, accepted donations, pickup scheduling & AI-scored reviews.`,
-    `/store.html?pid=${encodeURIComponent(store.place_id || '')}`
+    `/store?pid=${encodeURIComponent(store.place_id || '')}`
   );
   injectStoreSchema(store);
 
@@ -814,7 +814,7 @@ function renderEnrichedStoreDetail(store) {
   const bcStateLink = document.getElementById('breadcrumbStateLink');
   const bcStateName = document.getElementById('breadcrumbStateName');
   const bcStore     = document.getElementById('breadcrumbStore');
-  if (bcStateLink) bcStateLink.href = `state.html?state=${stateSlug}`;
+  if (bcStateLink) bcStateLink.href = `state?state=${stateSlug}`;
   if (bcStateName) bcStateName.textContent = store.state;
   if (bcStore)     bcStore.textContent     = store.name;
 
@@ -914,12 +914,12 @@ function renderEnrichedStoreDetail(store) {
         ${reviewsSection}
 
         <div style="text-align:center; padding-top:8px; font-size:0.83rem; color:var(--muted);">
-          <a href="submit.html" style="color:var(--muted);">&#9999; Suggest a correction</a>
+          <a href="submit" style="color:var(--muted);">&#9999; Suggest a correction</a>
         </div>
 
       </div>
     </div>
-    <a href="state.html?state=${stateSlug}" class="btn btn-outline">&#8592; All ${escHtml(store.state)} stores</a>
+    <a href="state?state=${stateSlug}" class="btn btn-outline">&#8592; All ${escHtml(store.state)} stores</a>
   `;
 }
 
@@ -927,13 +927,13 @@ function renderLegacyStoreDetail(store) {
   setPageMeta(
     `${store.name} — ${store.city}, ${store.state} | Donation Center Finder`,
     `Visit ${store.name} in ${store.city}, ${store.state}. View hours, accepted donations, and get directions to this donation center.`,
-    `/store.html?id=${store.id}`
+    `/store?id=${store.id}`
   );
 
   const bcStateLink = document.getElementById('breadcrumbStateLink');
   const bcStateName = document.getElementById('breadcrumbStateName');
   const bcStore     = document.getElementById('breadcrumbStore');
-  if (bcStateLink) bcStateLink.href = `state.html?state=${store.slug}`;
+  if (bcStateLink) bcStateLink.href = `state?state=${store.slug}`;
   if (bcStateName) bcStateName.textContent = store.state;
   if (bcStore)     bcStore.textContent     = store.name;
 
@@ -987,7 +987,7 @@ function renderLegacyStoreDetail(store) {
         </div>
 
         <div style="text-align:center; padding-top:8px; font-size:0.83rem; color:var(--muted);">
-          <a href="submit.html?correction=${store.id}" style="color:var(--muted);">&#9999; Suggest a correction</a>
+          <a href="submit?correction=${store.id}" style="color:var(--muted);">&#9999; Suggest a correction</a>
           &nbsp;&bull;&nbsp;
           <span>Added ${fmtDate(store.added)}</span>
         </div>
@@ -995,7 +995,7 @@ function renderLegacyStoreDetail(store) {
       </div>
     </div>
 
-    <a href="state.html?state=${store.slug}" class="btn btn-outline">
+    <a href="state?state=${store.slug}" class="btn btn-outline">
       &#8592; All ${store.state} stores
     </a>
   `;
