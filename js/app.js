@@ -271,9 +271,11 @@ function storeCardEnriched(store) {
     store.cleanliness_score    != null ? `<span class="schip">Clean ${store.cleanliness_score}/10</span>`         : '',
   ].filter(Boolean).join('');
 
-  const photoHtml = store.photo
-    ? `<div class="store-card-photo"><img src="${store.photo}" alt="${escHtml(store.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'" /></div>`
-    : '';
+  const placeholderPhoto = store.category === 'food' ? 'images/placeholder-food.jpg'
+    : store.category === 'rehab' ? 'images/placeholder-rehab.jpg'
+    : 'images/placeholder-thrift.jpg';
+  const photoSrc = (store.photo && store.photo.startsWith('images/')) ? store.photo : placeholderPhoto;
+  const photoHtml = `<div class="store-card-photo"><img src="${photoSrc}" alt="${escHtml(store.name)}" loading="lazy" onerror="this.src='${placeholderPhoto}'" /></div>`;
 
   return `
     <div class="store-card">
@@ -866,9 +868,11 @@ function renderEnrichedStoreDetail(store) {
       ${store.reviews_link ? `<a href="${store.reviews_link}" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:14px; display:inline-block;">Read All Reviews on Google &#8599;</a>` : ''}
     </div>` : '';
 
-  const detailPhoto = store.photo
-    ? `<div class="store-detail-photo"><img src="${store.photo}" alt="${escHtml(store.name)}" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'" /></div>`
-    : '';
+  const detailPlaceholder = store.category === 'food' ? 'images/placeholder-food.jpg'
+    : store.category === 'rehab' ? 'images/placeholder-rehab.jpg'
+    : 'images/placeholder-thrift.jpg';
+  const detailPhotoSrc = (store.photo && store.photo.startsWith('images/')) ? store.photo : detailPlaceholder;
+  const detailPhoto = `<div class="store-detail-photo"><img src="${detailPhotoSrc}" alt="${escHtml(store.name)}" onerror="this.src='${detailPlaceholder}'" /></div>`;
 
   document.getElementById('storeDetailContainer').innerHTML = `
     <div class="store-detail-card">
