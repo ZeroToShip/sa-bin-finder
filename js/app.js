@@ -69,7 +69,7 @@ function injectStoreSchema(store) {
       "postalCode": store.zip,
       "addressCountry": "US"
     },
-    "url": `${SITE_URL}/store?pid=${pid}`,
+    "url": `${SITE_URL}/${storeStaticPath(store)}`,
   };
 
   if (store.latitude && store.longitude) {
@@ -145,6 +145,32 @@ function escHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+
+function slugifyStorePart(str) {
+  return String(str || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'store';
+}
+
+function storeShortId(store) {
+  const raw = String((store && (store.place_id || store.id)) || '');
+  const compact = raw.replace(/[^a-zA-Z0-9]/g, '');
+  return compact.length >= 8 ? compact.slice(-8) : compact;
+}
+
+function storeStaticPath(store) {
+  if (!store) return 'store';
+  const base = [store.name, store.city, store.state_abbr || store.state, store.zip]
+    .filter(Boolean)
+    .join(' ');
+  const suffix = storeShortId(store);
+  const slug = suffix ? `${slugifyStorePart(base)}-${suffix}` : slugifyStorePart(base);
+  return `stores/${slug}`;
 }
 
 /* ---- ENRICHED HELPERS ---- */
@@ -298,7 +324,7 @@ function storeCardEnriched(store) {
         ${chips ? `<div class="schips-row">${chips}</div>` : ''}
       </div>
       <div class="store-card-footer">
-        <a href="store?pid=${encodeURIComponent(store.place_id)}" class="btn btn-primary btn-block">View Store Details</a>
+        <a href="${storeStaticPath(store)}" class="btn btn-primary btn-block">View Store Details</a>
       </div>
     </div>`;
 }
@@ -325,6 +351,7 @@ function renderNav() {
               </ul>
             </li>
             <li><a href="states">Browse States</a></li>
+            <li><a href="stores">All Locations</a></li>
             <li><a href="submit" class="nav-cta">+ Add a Store</a></li>
           </ul>
           <div class="nav-toggle" id="navToggle">
@@ -339,6 +366,7 @@ function renderNav() {
       <a href="food-pantries">&#127860; Food Pantries</a>
       <a href="rehab-centers">&#10084; Rehabilitation Centers</a>
       <a href="states">Browse States</a>
+      <a href="stores">All Locations</a>
       <a href="submit">+ Add a Store</a>
     </div>
   `;
@@ -379,6 +407,7 @@ function renderFooter() {
               <li><a href="food-pantries">Food Pantries</a></li>
               <li><a href="rehab-centers">Rehabilitation Centers</a></li>
               <li><a href="states">Browse All States</a></li>
+              <li><a href="stores">All Locations</a></li>
               <li><a href="submit">Submit a Location</a></li>
             </ul>
           </div>
@@ -808,7 +837,7 @@ function renderEnrichedStoreDetail(store) {
   setPageMeta(
     `${store.name} — ${store.city}, ${store.state} | Donation Center Finder`,
     `Visit ${store.name} in ${store.city}, ${store.state}.${ratingSnippet} Get directions, accepted donations, pickup scheduling & AI-scored reviews.`,
-    `/store?pid=${encodeURIComponent(store.place_id || '')}`
+    `/${storeStaticPath(store)}`
   );
   injectStoreSchema(store);
 
