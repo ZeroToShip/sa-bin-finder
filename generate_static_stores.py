@@ -151,7 +151,7 @@ def display_image(store):
     if photo.startswith("/images/"):
         return ".." + photo
     return placeholder_image(store)
-    
+
 def schema_image(store):
     """For JSON-LD structured data - uses absolute URLs"""
     photo = str(store.get("photo") or "")
@@ -169,6 +169,7 @@ def schema_image(store):
 
 # ============================================================
 # HOURS & RATING FUNCTIONS
+# testing
 # ============================================================
 
 def split_hours(working_hours):
