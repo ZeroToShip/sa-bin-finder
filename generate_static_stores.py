@@ -68,10 +68,8 @@ STATE_SLUGS = {
 # ============================================================
 
 def truncate_title(title, max_length=60):
-    """Truncate title to max_length characters for SEO"""
-    if len(title) <= max_length:
-        return title
-    return title[:max_length-3] + "..."
+    """Return title as-is - no truncation needed"""
+    return title
 
 def clean_canonical_url(url):
     """Ensure canonical URL has no trailing slash and proper extension"""
@@ -134,6 +132,10 @@ def category_label(category):
         "rehab": "Rehabilitation Center",
     }.get(str(category or "").lower(), "Donation Center")
 
+# ============================================================
+# IMAGE FUNCTIONS (FROM WORKING SCRIPT - MERGED)
+# ============================================================
+
 def placeholder_image(store):
     category = str(store.get("category") or "").lower()
     if category == "food":
@@ -144,9 +146,30 @@ def placeholder_image(store):
 
 def display_image(store):
     photo = str(store.get("photo") or "")
-    if photo and photo.startswith("http"):
-        return photo
+    if photo.startswith("images/"):
+        return "../" + photo
+    if photo.startswith("/images/"):
+        return ".." + photo
     return placeholder_image(store)
+    
+def schema_image(store):
+    """For JSON-LD structured data - uses absolute URLs"""
+    photo = str(store.get("photo") or "")
+    if photo.startswith("images/"):
+        return BASE_URL + "/" + photo
+    if photo.startswith("/images/"):
+        return BASE_URL + photo
+
+    category = str(store.get("category") or "").lower()
+    if category == "food":
+        return BASE_URL + "/images/placeholder-food.jpg"
+    if category == "rehab":
+        return BASE_URL + "/images/placeholder-rehab.jpg"
+    return BASE_URL + "/images/placeholder-thrift.jpg"
+
+# ============================================================
+# HOURS & RATING FUNCTIONS
+# ============================================================
 
 def split_hours(working_hours):
     if not working_hours:
@@ -209,26 +232,39 @@ def rating_html(store):
                 <span class="detail-rating-cnt">&nbsp;({reviews:,} Google reviews)</span>
               </div>"""
 
-def schema_image(store):
-    photo = str(store.get("photo") or "")
-    if photo.startswith("images/"):
-        return BASE_URL + "/" + photo
-    if photo.startswith("/images/"):
-        return BASE_URL + photo
-
-    category = str(store.get("category") or "").lower()
-    if category == "food":
-        return BASE_URL + "/images/placeholder-food.jpg"
-    if category == "rehab":
-        return BASE_URL + "/images/placeholder-rehab.jpg"
-    return BASE_URL + "/images/placeholder-thrift.jpg"
+# ============================================================
+# JSON-LD STRUCTURED DATA
+# ============================================================
 
 def json_ld(store):
     path = store_path(store)
+    
+    # Clean the store name - remove prefixes
+    store_name = store.get("name") or ""
+    prefixes_to_remove = [
+        "The Salvation Army - ",
+        "The Salvation Army ",
+        "Salvation Army - ",
+        "Salvation Army ",
+        "The Salvation Army's ",
+    ]
+    for prefix in prefixes_to_remove:
+        if store_name.startswith(prefix):
+            store_name = store_name[len(prefix):]
+            break
+    
+    # Remove suffixes
+    store_name = store_name.replace(" — Donation Center", "")
+    store_name = store_name.replace(" — Thrift Store", "")
+    store_name = store_name.replace(" — Food Pantry", "")
+    store_name = store_name.replace(" - Donation Center", "")
+    store_name = store_name.replace(" - Thrift Store", "")
+    store_name = store_name.replace(" - Food Pantry", "")
+    
     schema = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "Store"],
-        "name": store.get("name"),
+        "name": store_name,
         "url": BASE_URL + path,
         "image": schema_image(store),
         "telephone": store.get("phone"),
@@ -368,7 +404,6 @@ def page_shell(title, description, canonical_path, body, extra_head=""):
 # ============================================================
 # STORE PAGE RENDERER
 # ============================================================
-
 def render_store_page(store):
     path = store_path(store)
     state = store.get("state") or ""
@@ -376,8 +411,37 @@ def render_store_page(store):
     city = store.get("city") or ""
     category = category_label(store.get("category"))
     
-    raw_title = f"{store.get('name')} — {city}, {state}"
-    title = truncate_title(raw_title, 58) + " | Donation Center Finder"
+    # Clean the store name - remove prefixes
+    store_name = store.get('name') or ""
+    prefixes_to_remove = [
+        "The Salvation Army - ",
+        "The Salvation Army ",
+        "Salvation Army - ",
+        "Salvation Army ",
+        "The Salvation Army's ",
+    ]
+    for prefix in prefixes_to_remove:
+        if store_name.startswith(prefix):
+            store_name = store_name[len(prefix):]
+            break
+    
+    # Remove suffixes
+    store_name = store_name.replace(" — Donation Center", "")
+    store_name = store_name.replace(" — Thrift Store", "")
+    store_name = store_name.replace(" — Food Pantry", "")
+    store_name = store_name.replace(" - Donation Center", "")
+    store_name = store_name.replace(" - Thrift Store", "")
+    store_name = store_name.replace(" - Food Pantry", "")
+    
+    # Create clean title - FIXED INDENTATION
+    if store_name and city and state:
+        raw_title = f"{store_name}, {city}, {state}"
+    elif store_name:
+        raw_title = store_name
+    else:
+        raw_title = f"{city}, {state}"
+    
+    title = truncate_title(raw_title, 60)
     
     rating_snippet = ""
     try:
@@ -389,7 +453,7 @@ def render_store_page(store):
         pass
     
     description = (
-        f"Visit {store.get('name')} in {city}, {state}."
+        f"Visit {store_name} in {city}, {state}."
         f"{rating_snippet} Get address, phone number, hours, directions, and service details."
     )[:155]
 
@@ -409,7 +473,7 @@ def render_store_page(store):
         <span class="sep">›</span>
         <a href="{BASE_URL}{state_link}">{esc(state)}</a>
         <span class="sep">›</span>
-        <span>{esc(store.get("name"))}</span>
+        <span>{esc(store_name)}</span>
       </div>
     </div>
   </div>
@@ -417,12 +481,12 @@ def render_store_page(store):
   <main class="store-detail">
     <div class="container">
       <div class="store-detail-card">
-        <div class="store-detail-photo"><img src="{esc(img)}" alt="{esc(store.get("name"))}" loading="eager"></div>
+        <div class="store-detail-photo"><img src="{esc(img)}" alt="{esc(store_name)}" loading="eager"></div>
         <div class="store-detail-header">
           <div class="store-detail-logo">SA</div>
           <div class="store-detail-title">
-            <h1>{esc(store.get("name"))}</h1>
-            <div class="city-state">{esc(city)}, {esc(state)} {esc(store.get("zip"))}</div>
+            <h1>{esc(store_name)}</h1>
+            <div class="city-state">{esc(city)}, {esc(state)} {esc(store.get('zip'))}</div>
             {rating_html(store)}
           </div>
         </div>
@@ -445,7 +509,7 @@ def render_store_page(store):
           <div class="detail-section">
             <div class="detail-section-title">About This Location</div>
             <p style="color:var(--muted); font-size:0.95rem;">
-              {esc(store.get("name"))} is listed in our directory as a {esc(category.lower())}
+              {esc(store_name)} is listed in our directory as a {esc(category.lower())}
               serving {esc(city)}, {esc(state)}. Use the contact details above to confirm current hours,
               donation guidelines, services, and availability before visiting.
             </p>
@@ -462,7 +526,6 @@ def render_store_page(store):
 """
     extra_head = f'  <script type="application/ld+json">{json_ld(store)}</script>\n'
     return page_shell(title, description, path, body, extra_head)
-
 # ============================================================
 # STORES INDEX PAGE
 # ============================================================
@@ -762,9 +825,11 @@ def generate_city_pages(stores, limit=50):
 # ALL LOCATIONS HUB PAGE
 # ============================================================
 
+    
+   
 def render_all_locations_hub(stores):
     """Generate the main All Locations hub page"""
-    top_cities = get_top_cities(stores, 12)
+    top_cities = get_top_cities(stores, 15)
     
     state_counts = defaultdict(int)
     for store in stores:
