@@ -38,7 +38,6 @@ STORES_DIR = ROOT / "stores"
 STATES_DIR = ROOT / "states"
 CITIES_DIR = ROOT / "cities"
 SITEMAP_PATH = ROOT / "sitemap.xml"
-
 STATIC_PAGES = [
     ("/", "1.0", "weekly"),
     ("/thrift-stores", "0.9", "weekly"),
@@ -72,16 +71,13 @@ def truncate_title(title, max_length=60):
     return title
 
 def clean_canonical_url(url):
-    """Ensure canonical URL has no trailing slash and proper extension"""
+    """Ensure canonical URL has no trailing slash - clean URLs only"""
     if not url:
         return url
     
+    # Only remove trailing slash
     if url.endswith('/') and url != '/':
         url = url[:-1]
-    
-    if ('/stores/' in url or '/states/' in url or '/cities/' in url) and not url.endswith('.html'):
-        if not url.endswith('/index'):
-            url += '.html'
     
     return url
 
@@ -113,7 +109,7 @@ def store_slug(store):
     return f"{slugify(base)}-{suffix}" if suffix else slugify(base)
 
 def store_path(store):
-    return f"/stores/{store_slug(store)}.html"
+    return f"/stores/{store_slug(store)}"
 
 def state_slug(state_name):
     return STATE_SLUGS.get(state_name, slugify(state_name))
@@ -384,11 +380,11 @@ def page_shell(title, description, canonical_path, body, extra_head=""):
         <div class="footer-column">
           <h3>Popular States</h3>
           <ul>
-            <li><a href="{BASE_URL}/states/california.html">California</a></li>
-            <li><a href="{BASE_URL}/states/texas.html">Texas</a></li>
-            <li><a href="{BASE_URL}/states/florida.html">Florida</a></li>
-            <li><a href="{BASE_URL}/states/new-york.html">New York</a></li>
-            <li><a href="{BASE_URL}/states/illinois.html">Illinois</a></li>
+            <li><a href="{BASE_URL}/states/california">California</a></li>
+            <li><a href="{BASE_URL}/states/texas">Texas</a></li>
+            <li><a href="{BASE_URL}/states/florida">Florida</a></li>
+            <li><a href="{BASE_URL}/states/new-york">New York</a></li>
+            <li><a href="{BASE_URL}/states/illinois">Illinois</a></li>
           </ul>
         </div>
       </div>
@@ -408,7 +404,7 @@ def page_shell(title, description, canonical_path, body, extra_head=""):
 def render_store_page(store):
     path = store_path(store)
     state = store.get("state") or ""
-    state_link = f"/states/{state_slug(state)}.html"
+    state_link = f"/states/{state_slug(state)}"
     city = store.get("city") or ""
     category = category_label(store.get("category"))
     
@@ -571,7 +567,7 @@ def render_stores_index_page(stores):
 
 def render_state_page(state_name, state_stores):
     slug = state_slug(state_name)
-    state_link = f"/states/{slug}.html"
+    state_link = f"/states/{slug}"
     
     sorted_stores = sorted(state_stores, key=lambda x: (x.get("city") or "", x.get("name") or ""))
     
@@ -628,7 +624,7 @@ def render_states_index_page(stores):
         count = len(by_state[state_name])
         states_html += f"""
           <li style="margin-bottom: 12px;">
-            <a href="{BASE_URL}/states/{slug}.html" style="font-weight:600;">{esc(state_name)}</a>
+           <a href="{BASE_URL}/states/{slug}" style="font-weight:600;">{esc(state_name)}</a>
             <span style="color:var(--muted); font-size:0.85rem;"> ({count} locations)</span>
           </li>"""
     
@@ -741,7 +737,7 @@ def render_city_page(city_info):
         <span class="sep">›</span>
         <a href="{BASE_URL}/states/">States</a>
         <span class="sep">›</span>
-        <a href="{BASE_URL}/states/{state_slug(state)}.html">{esc(state)}</a>
+        <a href="{BASE_URL}/states/{state_slug(state)}">{esc(state)}</a>
         <span class="sep">›</span>
         <span>{esc(city)}</span>
       </div>
@@ -766,7 +762,7 @@ def render_city_page(city_info):
       
       <div class="city-nearby">
         <h3>Explore More Locations</h3>
-        <p><a href="{BASE_URL}/states/{state_slug(state)}.html">View all {esc(state)} donation centers</a> | <a href="{BASE_URL}/states/">Browse all states</a> | <a href="{BASE_URL}/cities/">View top cities</a></p>
+        <p><a href="{BASE_URL}/states/{state_slug(state)}">View all {esc(state)} donation centers</a> | <a href="{BASE_URL}/states/">Browse all states</a> | <a href="{BASE_URL}/cities/">View top cities</a></p>
       </div>
     </div>
   </main>
@@ -809,7 +805,7 @@ def generate_city_pages(stores, limit=50):
     
     for city_info in top_cities:
         cities_index_html += f"""
-        <div class="city-card"><a href="{BASE_URL}/cities/{city_info['slug']}.html"><h3>{esc(city_info['city'])}, {esc(city_info['state_abbr'])}</h3><p>{len(city_info['stores'])} donation centers</p><span class="city-card-link">View Centers →</span></a></div>"""
+        <div class="city-card"><a href="{BASE_URL}/cities/{city_info['slug']}"><h3>{esc(city_info['city'])}, {esc(city_info['state_abbr'])}</h3><p>{len(city_info['stores'])} donation centers</p><span class="city-card-link">View Centers →</span></a></div>"""
     
     cities_index_html += """</div><p style="text-align:center;margin-top:40px;"><a href="{BASE_URL}/states/" class="btn btn-outline">Browse by State</a> <a href="{BASE_URL}/stores/" class="btn btn-outline">View All Locations</a></p></div></main>
   <style>.cities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:30px;}.city-card{background:var(--white);border-radius:12px;padding:24px;text-align:center;transition:transform .2s;box-shadow:var(--shadow-sm);border:1px solid var(--border);}.city-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}.city-card a{text-decoration:none;color:var(--text);display:block;}.city-card h3{color:var(--navy);margin-bottom:8px;}.city-card p{color:var(--muted);margin-bottom:12px;}.city-card-link{color:var(--red);font-weight:600;}</style>"""
@@ -859,7 +855,7 @@ def render_all_locations_hub(stores):
     
     for city_info in top_cities:
         body += f"""
-          <a href="{BASE_URL}/cities/{city_info['slug']}.html" class="hub-card">
+          <a href="{BASE_URL}/cities/{city_info['slug']}" class="hub-card">
             <h3>{esc(city_info['city'])}, {esc(city_info['state_abbr'])}</h3>
             <p>{len(city_info['stores'])} donation centers</p>
           </a>"""
@@ -876,7 +872,7 @@ def render_all_locations_hub(stores):
     for state, count in top_states:
         slug = state_slug(state)
         body += f"""
-          <a href="{BASE_URL}/states/{slug}.html" class="hub-card">
+          <a href="{BASE_URL}/states/{slug}" class="hub-card">
             <h3>{esc(state)}</h3>
             <p>{count} locations</p>
           </a>"""
@@ -959,16 +955,16 @@ def build_sitemap(stores):
     for path, priority, changefreq in STATIC_PAGES:
         entries.append((BASE_URL + path, priority, changefreq))
     
-    entries.append((f"{BASE_URL}/states/", "0.9", "weekly"))
-    entries.append((f"{BASE_URL}/cities/", "0.9", "weekly"))
-    entries.append((f"{BASE_URL}/stores/", "0.8", "weekly"))
+    entries.append((f"{BASE_URL}/states", "0.9", "weekly"))
+    entries.append((f"{BASE_URL}/cities", "0.9", "weekly"))
+    entries.append((f"{BASE_URL}/stores", "0.8", "weekly"))
     entries.append((f"{BASE_URL}/all-locations", "0.9", "weekly"))
     
     for slug in states:
-        entries.append((f"{BASE_URL}/states/{slug}.html", "0.8", "weekly"))
+        entries.append((f"{BASE_URL}/states/{slug}", "0.8", "weekly"))
     
     for city_info in top_cities:
-        entries.append((f"{BASE_URL}/cities/{city_info['slug']}.html", "0.7", "weekly"))
+        entries.append((f"{BASE_URL}/cities/{city_info['slug']}", "0.7", "weekly"))
     
     for store in stores:
         entries.append((BASE_URL + store_path(store), "0.6", "monthly"))
