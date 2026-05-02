@@ -141,13 +141,23 @@ def placeholder_image(store):
     return "../images/placeholder-thrift.jpg"
 
 def display_image(store):
+    """Display store image - prioritizes Google Photos URLs, then local images"""
     photo = str(store.get("photo") or "")
+    
+    # Case 1: Full HTTP/HTTPS URL (Google Photos, etc.)
+    if photo.startswith("http"):
+        return photo
+    
+    # Case 2: Relative path starting with images/
     if photo.startswith("images/"):
         return "../" + photo
+    
+    # Case 3: Absolute path starting with /images/
     if photo.startswith("/images/"):
         return ".." + photo
+    
+    # Case 4: No valid image found - use placeholder
     return placeholder_image(store)
-
 def schema_image(store):
     """For JSON-LD structured data - uses absolute URLs"""
     photo = str(store.get("photo") or "")
