@@ -4,6 +4,12 @@
   "redirects": [
     {
       "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.donationcenterfinder.com" }],
+      "destination": "https://donationcenterfinder.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "finddonationcenters.com" }],
       "destination": "https://donationcenterfinder.com/$1",
       "permanent": true

@@ -141,23 +141,22 @@ def placeholder_image(store):
     return "../images/placeholder-thrift.jpg"
 
 def display_image(store):
-    """Display store image - prioritizes Google Photos URLs, then local images"""
+    """Display store image - uses local images only"""
     photo = str(store.get("photo") or "")
     
-    # Case 1: Full HTTP/HTTPS URL (Google Photos, etc.)
-    if photo.startswith("http"):
-        return photo
-    
-    # Case 2: Relative path starting with images/
+    # Case 1: Relative path starting with images/
     if photo.startswith("images/"):
         return "../" + photo
     
-    # Case 3: Absolute path starting with /images/
+    # Case 2: Absolute path starting with /images/
     if photo.startswith("/images/"):
         return ".." + photo
     
-    # Case 4: No valid image found - use placeholder
+    # Case 3: No valid image found - use placeholder
     return placeholder_image(store)
+
+
+    
 def schema_image(store):
     """For JSON-LD structured data - uses absolute URLs"""
     photo = str(store.get("photo") or "")
@@ -327,6 +326,7 @@ def page_shell(title, description, canonical_path, body, extra_head=""):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="max-age=86400">
   <title>{esc(truncate_title(title))}</title>
   <meta name="description" content="{esc(description)}">
   <meta name="robots" content="index, follow">
@@ -350,8 +350,8 @@ def page_shell(title, description, canonical_path, body, extra_head=""):
           <li><a href="{BASE_URL}/thrift-stores">Thrift Stores</a></li>
           <li><a href="{BASE_URL}/food-pantries">Food Pantries</a></li>
           <li><a href="{BASE_URL}/rehab-centers">Rehab Centers</a></li>
-          <li><a href="{BASE_URL}/states/">States</a></li>
-          <li><a href="{BASE_URL}/cities/">Top Cities</a></li>
+          <li><a href="{BASE_URL}/states">States</a></li>
+          <li><a href="{BASE_URL}/cities">Top Cities</a></li>
           <li><a href="{BASE_URL}/all-locations">All Locations</a></li>
         </ul>
       </div>
@@ -381,8 +381,8 @@ def page_shell(title, description, canonical_path, body, extra_head=""):
             <li><a href="{BASE_URL}/thrift-stores">Thrift &amp; Donation Stores</a></li>
             <li><a href="{BASE_URL}/food-pantries">Food Pantries</a></li>
             <li><a href="{BASE_URL}/rehab-centers">Rehabilitation Centers</a></li>
-            <li><a href="{BASE_URL}/states/">Browse All States</a></li>
-            <li><a href="{BASE_URL}/cities/">Top Cities</a></li>
+            <li><a href="{BASE_URL}/states">Browse All States</a></li>
+            <li><a href="{BASE_URL}/cities">Top Cities</a></li>
             <li><a href="{BASE_URL}/submit">Submit a Location</a></li>
           </ul>
         </div>
@@ -476,7 +476,7 @@ def render_store_page(store):
       <div class="breadcrumb">
         <a href="{BASE_URL}/">Home</a>
         <span class="sep">›</span>
-        <a href="{BASE_URL}/states/">States</a>
+        <a href="{BASE_URL}/states">States</a>
         <span class="sep">›</span>
         <a href="{BASE_URL}{state_link}">{esc(state)}</a>
         <span class="sep">›</span>
@@ -594,7 +594,7 @@ def render_state_page(state_name, state_stores):
       <div class="breadcrumb">
         <a href="{BASE_URL}/">Home</a>
         <span class="sep">›</span>
-        <a href="{BASE_URL}/states/">States</a>
+        <a href="{BASE_URL}/states">States</a>
         <span class="sep">›</span>
         <span>{esc(state_name)}</span>
       </div>
@@ -745,7 +745,7 @@ def render_city_page(city_info):
       <div class="breadcrumb">
         <a href="{BASE_URL}/">Home</a>
         <span class="sep">›</span>
-        <a href="{BASE_URL}/states/">States</a>
+        <a href="{BASE_URL}/states">States</a>
         <span class="sep">›</span>
         <a href="{BASE_URL}/states/{state_slug(state)}">{esc(state)}</a>
         <span class="sep">›</span>
@@ -772,7 +772,7 @@ def render_city_page(city_info):
       
       <div class="city-nearby">
         <h3>Explore More Locations</h3>
-        <p><a href="{BASE_URL}/states/{state_slug(state)}">View all {esc(state)} donation centers</a> | <a href="{BASE_URL}/states/">Browse all states</a> | <a href="{BASE_URL}/cities/">View top cities</a></p>
+        <p><a href="{BASE_URL}/states/{state_slug(state)}">View all {esc(state)} donation centers</a> | <a href="{BASE_URL}/states/">Browse all states</a> | <a href="{BASE_URL}/cities">View top cities</a></p>
       </div>
     </div>
   </main>
@@ -809,16 +809,16 @@ def generate_city_pages(stores, limit=50):
         city_file.write_text(render_city_page(city_info), encoding="utf-8")
         print(f"  ✅ Generated city page: cities/{slug}.html ({len(city_info['stores'])} stores)")
     
-    # Generate cities index page
-    cities_index_html = """  <div class="page-header"><div class="container"><div class="breadcrumb"><a href="{BASE_URL}/">Home</a><span class="sep">›</span><span>Top Cities</span></div><h1>Top US Cities for Donation Centers</h1><p>Find donation centers in America's largest cities.</p></div></div>
+    # Generate cities index page - CHANGE THIS TO f-string
+    cities_index_html = f"""  <div class="page-header"><div class="container"><div class="breadcrumb"><a href="{BASE_URL}/">Home</a><span class="sep">›</span><span>Top Cities</span></div><h1>Top US Cities for Donation Centers</h1><p>Find donation centers in America's largest cities.</p></div></div>
   <main class="section"><div class="container"><div class="cities-grid">"""
     
     for city_info in top_cities:
         cities_index_html += f"""
         <div class="city-card"><a href="{BASE_URL}/cities/{city_info['slug']}"><h3>{esc(city_info['city'])}, {esc(city_info['state_abbr'])}</h3><p>{len(city_info['stores'])} donation centers</p><span class="city-card-link">View Centers →</span></a></div>"""
     
-    cities_index_html += """</div><p style="text-align:center;margin-top:40px;"><a href="{BASE_URL}/states/" class="btn btn-outline">Browse by State</a> <a href="{BASE_URL}/stores/" class="btn btn-outline">View All Locations</a></p></div></main>
-  <style>.cities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:30px;}.city-card{background:var(--white);border-radius:12px;padding:24px;text-align:center;transition:transform .2s;box-shadow:var(--shadow-sm);border:1px solid var(--border);}.city-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}.city-card a{text-decoration:none;color:var(--text);display:block;}.city-card h3{color:var(--navy);margin-bottom:8px;}.city-card p{color:var(--muted);margin-bottom:12px;}.city-card-link{color:var(--red);font-weight:600;}</style>"""
+    cities_index_html += f"""</div><p style="text-align:center;margin-top:40px;"><a href="{BASE_URL}/states/" class="btn btn-outline">Browse by State</a> <a href="{BASE_URL}/stores/" class="btn btn-outline">View All Locations</a></p></div></main>
+  <style>.cities-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:30px;}}.city-card{{background:var(--white);border-radius:12px;padding:24px;text-align:center;transition:transform .2s;box-shadow:var(--shadow-sm);border:1px solid var(--border);}}.city-card:hover{{transform:translateY(-4px);box-shadow:var(--shadow);}}.city-card a{{text-decoration:none;color:var(--text);display:block;}}.city-card h3{{color:var(--navy);margin-bottom:8px;}}.city-card p{{color:var(--muted);margin-bottom:12px;}}.city-card-link{{color:var(--red);font-weight:600;}}</style>"""
     
     (CITIES_DIR / "index.html").write_text(
         page_shell("Top 50 US Cities for Donation Centers", "Browse donation centers in America's largest cities.", "/cities", cities_index_html),
@@ -872,7 +872,7 @@ def render_all_locations_hub(stores):
     
     body += f"""
         </div>
-        <div class="view-all"><a href="{BASE_URL}/cities/" class="btn btn-outline">View All Cities →</a></div>
+        <div class="view-all"><a href="{BASE_URL}/cities" class="btn btn-outline">View All Cities →</a></div>
       </div>
 
       <div class="hub-section">
