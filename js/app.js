@@ -414,11 +414,11 @@ function renderFooter() {
           <div>
             <div class="footer-heading">Popular States</div>
             <ul class="footer-links">
-              <li><a href="state?state=california">California</a></li>
-              <li><a href="state?state=texas">Texas</a></li>
-              <li><a href="state?state=florida">Florida</a></li>
-              <li><a href="state?state=new-york">New York</a></li>
-              <li><a href="state?state=illinois">Illinois</a></li>
+              <li><a href="states/california">California</a></li>
+              <li><a href="states/texas">Texas</a></li>
+              <li><a href="states/florida">Florida</a></li>
+              <li><a href="states/new-york">New York</a></li>
+              <li><a href="states/illinois">Illinois</a></li>
             </ul>
           </div>
         </div>
@@ -478,7 +478,7 @@ function statesGrid(states) {
     const count = storeCount(state.slug);
     const label = count > 0 ? `${count.toLocaleString()} store${count > 1 ? 's' : ''}` : 'Be first to add';
     return `
-      <a href="state?state=${state.slug}" class="state-card">
+      <a href="states/${state.slug}" class="state-card">
         <div class="state-card-name">${state.name}</div>
         <div class="state-card-count ${count > 0 ? 'has-stores' : ''}">${label}</div>
       </a>
