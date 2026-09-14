@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit a Location — Donation Center Finder</title>
-  <meta name="description" content="Add a missing donation center to our community directory. Help thousands of people find thrift stores, food pantries, and rehab centers near them.">
+  <title>Add, Update, or Promote a Donation Center — Donation Center Finder</title>
+  <meta name="description" content="Add a missing donation center, correct an existing listing, or request a featured listing on Donation Center Finder.">
   <link rel="canonical" href="https://donationcenterfinder.com/submit">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Donation Center Finder">
-  <meta property="og:title" content="Submit a Location — Donation Center Finder">
-  <meta property="og:description" content="Add a missing donation center to our community directory. Help thousands find thrift stores, food pantries, and rehab centers.">
+  <meta property="og:title" content="Add, Update, or Promote a Donation Center — Donation Center Finder">
+  <meta property="og:description" content="Help keep Donation Center Finder accurate or ask about a featured listing.">
   <meta property="og:url" content="https://donationcenterfinder.com/submit">
   <meta property="og:image" content="https://donationcenterfinder.com/images/og-home.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -24,161 +24,35 @@
       <div class="breadcrumb">
         <a href="/">Home</a>
         <span class="sep">&#8250;</span>
-        <span>Submit a Store</span>
+        <span>Add or Update a Listing</span>
       </div>
-      <h1>Submit a Store</h1>
-      <p>Help the community by adding a Salvation Army bin store to our free directory</p>
+      <h1>Add, Update, or Promote a Donation Center</h1>
+      <p>Help keep the directory accurate, or ask about a featured listing for your organization.</p>
     </div>
   </div>
 
-  <div class="submit-form">
-
-    <!-- SUCCESS BOX (hidden until form submitted) -->
-    <div class="success-box" id="successBox">
-      <div class="success-icon">&#9989;</div>
-      <h3>Thank You for Your Submission!</h3>
-      <p>Your store has been submitted and will be reviewed before being added to the directory. We appreciate your contribution to the community!</p>
-      <a href="/" class="btn btn-primary" style="margin-top:8px;">Back to Home</a>
+  <main class="submit-form">
+    <div class="form-info-box">
+      All submissions are reviewed before appearing in the directory. Businesses can also request a featured listing.
     </div>
-
-    <!-- FORM WRAPPER -->
-    <div id="formWrapper">
-      <div class="form-info-box">
-        &#8505;&#65039; All submissions are reviewed before publishing. Fields marked <strong>*</strong> are required.
-      </div>
-
-      <form id="storeSubmitForm" novalidate>
-
-        <!-- ===== STORE INFO ===== -->
-        <div class="form-card">
-          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:20px;">Store Information</p>
-
-          <div class="form-group">
-            <label class="form-label" for="storeName">Store Name <span class="req">*</span></label>
-            <input type="text" class="form-input" id="storeName" name="storeName"
-              placeholder="e.g. Salvation Army Bin Store – Detroit" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="storeAddress">Street Address <span class="req">*</span></label>
-            <input type="text" class="form-input" id="storeAddress" name="storeAddress"
-              placeholder="e.g. 3031 Grand River Ave" required>
-          </div>
-
-          <div class="form-row-3">
-            <div class="form-group">
-              <label class="form-label" for="storeCity">City <span class="req">*</span></label>
-              <input type="text" class="form-input" id="storeCity" name="storeCity" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="storeState">State <span class="req">*</span></label>
-              <select class="form-select" id="storeState" name="storeState" required>
-                <option value="">Select...</option>
-                <!-- Populated by JS -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="storeZip">ZIP Code <span class="req">*</span></label>
-              <input type="text" class="form-input" id="storeZip" name="storeZip"
-                placeholder="e.g. 48208" maxlength="5" pattern="\d{5}" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="storePhone">Phone Number</label>
-            <input type="tel" class="form-input" id="storePhone" name="storePhone"
-              placeholder="e.g. (313) 555-0229">
-          </div>
-        </div>
-
-        <!-- ===== PRICING ===== -->
-        <div class="form-card" style="margin-top:20px;">
-          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:20px;">Pricing &amp; Restocking</p>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="storePricing">Price Per Pound <span class="req">*</span></label>
-              <input type="text" class="form-input" id="storePricing" name="storePricing"
-                placeholder="e.g. $1.49/lb" required>
-              <div class="form-hint">What does this store charge per pound?</div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="storeRestocks">Restock Days</label>
-              <input type="text" class="form-input" id="storeRestocks" name="storeRestocks"
-                placeholder="e.g. Tuesday, Friday">
-              <div class="form-hint">Which days do the bins get refilled?</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== HOURS ===== -->
-        <div class="form-card" style="margin-top:20px;">
-          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:8px;">Store Hours</p>
-          <p style="color:var(--muted); font-size:0.87rem; margin-bottom:20px;">Enter hours for each day. Leave blank or type "Closed" if the store is not open that day.</p>
-          <div id="hoursSection">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- ===== DESCRIPTION ===== -->
-        <div class="form-card" style="margin-top:20px;">
-          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:20px;">About the Store</p>
-
-          <div class="form-group">
-            <label class="form-label" for="storeDescription">Description</label>
-            <textarea class="form-textarea" id="storeDescription" name="storeDescription" rows="4"
-              placeholder="Describe this store — what makes it great, what you typically find, tips for first-time visitors, parking info, etc."></textarea>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="storeFeatures">Categories Available</label>
-            <input type="text" class="form-input" id="storeFeatures" name="storeFeatures"
-              placeholder="e.g. Clothing, Electronics, Furniture, Books, Toys">
-            <div class="form-hint">Comma-separated list of item types typically found here</div>
-          </div>
-        </div>
-
-        <!-- ===== YOUR CONTACT ===== -->
-        <div class="form-card" style="margin-top:20px;">
-          <p style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:8px;">Your Contact <span style="font-weight:400; font-size:0.9rem; color:var(--muted);">(optional)</span></p>
-          <p style="color:var(--muted); font-size:0.87rem; margin-bottom:20px;">Only used to follow up if we have questions about the listing. Never shared publicly.</p>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="submitterName">Your Name</label>
-              <input type="text" class="form-input" id="submitterName" name="submitterName" placeholder="First name">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="submitterEmail">Your Email</label>
-              <input type="email" class="form-input" id="submitterEmail" name="submitterEmail"
-                placeholder="only for follow-up questions">
-            </div>
-          </div>
-        </div>
-
-        <!-- SUBMIT BUTTON -->
-        <div style="margin-top:28px;">
-          <button type="submit" class="btn btn-primary" style="padding:15px 40px; font-size:1rem;">
-            Submit Store for Review &#8594;
-          </button>
-          <p style="margin-top:12px; font-size:0.82rem; color:var(--muted);">
-            By submitting you confirm this is an actual Salvation Army bin / by-the-pound store location.
-          </p>
-        </div>
-
-      </form>
-    </div><!-- end formWrapper -->
-
-  </div><!-- end submit-form -->
+    <iframe
+      data-tally-src="https://tally.so/embed/OD6bQY?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+      loading="lazy"
+      width="100%"
+      height="860"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="Add, Update, or Promote a Donation Center"></iframe>
+  </main>
 
   <div id="footerContainer"></div>
 
-  <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+  <script async src="https://tally.so/widgets/embed.js"></script>
   <script>
     renderNav();
     renderFooter();
-    initSubmitPage();
   </script>
 </body>
 </html>
